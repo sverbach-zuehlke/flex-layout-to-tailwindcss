@@ -2,6 +2,14 @@ export const supportedBreakpoints = ["xs", "sm", "md", "lg", "xl"] as const;
 
 export type SupportedBreakpointType = (typeof supportedBreakpoints)[number];
 
+export const supportedTailwindcssBreakpoints = [
+  ...supportedBreakpoints,
+  "2xl",
+] as const;
+
+export type SupportedTailwindcssBreakpointType =
+  (typeof supportedTailwindcssBreakpoints)[number];
+
 export const supportedDirectives = [
   "fxFlex",
   "fxLayout",

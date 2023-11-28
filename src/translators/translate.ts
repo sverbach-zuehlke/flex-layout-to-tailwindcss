@@ -1,13 +1,14 @@
 import {
   supportedBreakpoints,
   SupportedBreakpointType,
-  SupportedFxDirectiveType,
   SupportedDirectiveType,
+  SupportedFxDirectiveType,
+  supportedTailwindcssBreakpoints,
+  SupportedTailwindcssBreakpointType,
 } from "../supported-directive-type";
 import {
   TranslationOperationAttributeResult,
   TranslationOperationClassResult,
-  TranslationOperationResult,
 } from "./translation-operation-result";
 import { translateFxFlex } from "./translate-fx-flex";
 import { translateFxLayout } from "./translate-fx-layout";
@@ -41,12 +42,14 @@ export type ApplyBreakpoint<T> = (
 
 export type ApplyBreakpointOnClass =
   ApplyBreakpoint<TranslationOperationClassResult>;
-export type ApplyBreakpointOnAttribute =
-  ApplyBreakpoint<TranslationOperationClassResult>;
 
-export type ApplyBreakpointOnClassOrAttribute =
-  | ApplyBreakpointOnClass
-  | ApplyBreakpointOnAttribute;
+export const getBiggerScreen = (
+  screenBreakpoint: SupportedBreakpointType,
+): SupportedTailwindcssBreakpointType => {
+  return supportedTailwindcssBreakpoints[
+    supportedBreakpoints.indexOf(screenBreakpoint) + 1
+  ];
+};
 
 export const applyTailwindCSSBreakpoint: ApplyBreakpointOnClass = (
   breakpoint,
@@ -54,7 +57,9 @@ export const applyTailwindCSSBreakpoint: ApplyBreakpointOnClass = (
 ) => {
   return {
     ...result,
-    classes: result.classes.map((c) => `${breakpoint}:${c}`),
+    classes: result.classes.map(
+      (c) => `${breakpoint}:max-${getBiggerScreen(breakpoint)}:${c}`,
+    ),
   };
 };
 

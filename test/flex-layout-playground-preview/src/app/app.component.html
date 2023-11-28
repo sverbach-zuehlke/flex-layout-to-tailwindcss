@@ -3,12 +3,12 @@
 
   <section class="bg-amber-300 rounded-md">
     <h2 class="font-bold text-lg">Row layouts (column on sm)</h2>
-    <div class="w-96 sm:flex sm:flex-col sm:gap-[0.5rem] flex flex-row gap-[1rem]">
+    <div class="w-96 xs:max-sm:flex xs:max-sm:flex-col xs:max-sm:gap-[.5rem] sm:max-md:flex sm:max-md:flex-col sm:max-md:gap-[1rem] md:max-lg:gap-[3rem] lg:max-xl:gap-[4rem] xl:max-2xl:gap-[5rem] flex flex-row gap-[1rem]">
       <span class="grow shrink basis-0 border-box">Item1</span>
       <span class="grow shrink basis-[50%] min-w-[50%] max-w-[50%] border-box">Item2</span>
       <span>Item3</span>
     </div>
-    <div class="w-full sm:flex sm:flex-col-reverse sm:items-start flex flex-row-reverse justify-between content-center items-center">
+    <div class="w-full sm:max-md:flex sm:max-md:flex-col-reverse sm:max-md:items-start flex flex-row-reverse justify-between content-center items-center">
       <span>End</span>
       <span>Start</span>
     </div>
