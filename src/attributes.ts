@@ -1,17 +1,18 @@
-import { HTMLElement } from "node-html-parser";
 import {
-  supportedBreakpoints,
   SupportedBreakpointType,
   supportedDirectives,
   SupportedFxDirectiveType,
   SupportedResponsiveFxDirectiveType,
 } from "./supported-directive-type";
 
-const getAttributes = (element: HTMLElement): [string, string][] => {
-  const raw = element.rawAttrs;
-  const pattern = /(\w+(?:\.\w+)*)\s*(?:=\s*["']([^"']*)["'])?/g;
-  const matches = [...raw.matchAll(pattern)];
-  return matches.map((attribute) => [attribute[1], attribute[2] ?? ""]);
+const getAttributes = (element: Element): [string, string][] => {
+  const raw = element.attributes;
+  const attributes: [string, string][] = [];
+  for (let i = 0; i < raw.length; i++) {
+    attributes.push([raw[i].name, raw[i].value ?? ""]);
+  }
+
+  return attributes;
 };
 
 const isSupportedFxDirectiveType = (
@@ -34,7 +35,7 @@ const isSupportedResponsiveFxDirectiveType = (
 };
 
 export const getSupportedFxAttributes = (
-  element: HTMLElement,
+  element: Element,
 ): [SupportedFxDirectiveType, string][] => {
   return getAttributes(element).filter(
     (attribute): attribute is [SupportedFxDirectiveType, string] =>
@@ -42,7 +43,7 @@ export const getSupportedFxAttributes = (
   );
 };
 export const getSupportedResponsiveFxAttributes = (
-  element: HTMLElement,
+  element: Element,
   breakpoint: SupportedBreakpointType,
 ): [SupportedResponsiveFxDirectiveType, string][] => {
   return getAttributes(element).filter(

@@ -8,23 +8,23 @@ export const translateFxFlex: TranslateToClassesFunction = (
 
   switch (attributeValues) {
     case "":
-      classes = ["grow", "shrink", "basis-0"];
+      classes = ["flex", "grow", "shrink", "basis-0"];
       break;
     case "grow":
-      classes = ["grow", "shrink", "basis-full"];
+      classes = ["flex", "grow", "shrink", "basis-full"];
       break;
     case "initial":
     case "nogrow":
-      classes = ["grow-0", "shrink", "basis-auto"];
+      classes = ["flex", "grow-0", "shrink", "basis-auto"];
       break;
     case "auto":
-      classes = ["grow", "shrink", "basis-full"];
+      classes = ["flex", "grow", "shrink", "basis-full"];
       break;
     case "none":
-      classes = ["grow-0", "shrink-0", "basis-auto"];
+      classes = ["flex", "grow-0", "shrink-0", "basis-auto"];
       break;
     case "noshrink":
-      classes = ["grow", "shrink-0", "basis-auto"];
+      classes = ["flex", "grow", "shrink-0", "basis-auto"];
       break;
     default:
       const flexValues = attributeValues.split(" ");
@@ -32,12 +32,14 @@ export const translateFxFlex: TranslateToClassesFunction = (
         flexValues[flexValues.length - 1].translateNumberToPercent();
       if (flexValues.length === 3) {
         classes = [
+          "flex",
           `grow-[${flexValues[0]}]`,
           `shrink-[${flexValues[1]}]`,
           `basis-[${basisValue}]`,
         ];
       } else {
         classes = [
+          "flex",
           "grow",
           "shrink",
           `basis-[${basisValue}]`,

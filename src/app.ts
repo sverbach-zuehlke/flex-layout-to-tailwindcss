@@ -1,12 +1,9 @@
 import fs from "fs";
 import { glob } from "glob";
-import { HTMLElement, parse } from "node-html-parser";
 import {
   supportedBreakpoints,
-  SupportedBreakpointType,
   supportedDirectives,
-  SupportedFxDirectiveType,
-  SupportedResponsiveFxDirectiveType,
+  supportedResponsiveDirectives,
 } from "./supported-directive-type";
 import { translate } from "./translators/translate";
 import arg from "arg";
@@ -16,6 +13,7 @@ import {
   getSupportedFxAttributes,
   getSupportedResponsiveFxAttributes,
 } from "./attributes";
+import { JSDOM } from "jsdom";
 
 const log = logger({ level: "trace" });
 
@@ -84,32 +82,35 @@ const getRidOfFlexLayoutPlease = async () => {
       `Detected ${htmlFilePaths.length} .html file(s), starting processing now.`,
     );
 
-    const fxQuery = supportedDirectives
-      .map((directive) => `[${directive}]`)
-      .join(", ");
-
     htmlFilePaths.forEach((htmlPath) => {
       log.debug(`Processing: [${htmlPath}]`);
       const data = fs.readFileSync(htmlPath, "utf8");
-      const root = parse(data);
-      const translationOperations: [
-        TranslationOperationResult[],
-        HTMLElement,
-      ][] = [];
+      const root = new JSDOM(data).window.document;
+      const translationOperations: [TranslationOperationResult[], Element][] =
+        [];
 
       // get translations for responsive fxFlex directives (i.e. fxFlex.sm, fxLayout.md) to tailwindcss classes
-      let elementsWithFxFlex = root.querySelectorAll(fxQuery) ?? [];
+      const fxResponsiveDirectiveRegex = new RegExp(
+        supportedResponsiveDirectives.join("|"),
+      );
+      const fxResponsiveElements = Array.from(
+        root.getElementsByTagName("*"),
+      ).filter((element) =>
+        Array.from(element.attributes).find((attribute) =>
+          fxResponsiveDirectiveRegex.test(attribute.name),
+        ),
+      );
       const breakpoints = supportedBreakpoints;
-      elementsWithFxFlex.forEach((element) => {
+      fxResponsiveElements.forEach((element) => {
         breakpoints.forEach((breakpoint) => {
           let fxAttributes = getSupportedResponsiveFxAttributes(
             element,
             breakpoint,
           );
           let parentAttributeValues: string[];
-          if (element.parentNode) {
+          if (element.parentElement) {
             parentAttributeValues = getSupportedResponsiveFxAttributes(
-              element.parentNode,
+              element.parentElement,
               breakpoint,
             ).map((attribute) => attribute[1]);
           } else {
@@ -138,7 +139,7 @@ const getRidOfFlexLayoutPlease = async () => {
       });
 
       // remove responsive fxFlex directives
-      elementsWithFxFlex.forEach((element) => {
+      fxResponsiveElements.forEach((element) => {
         const supportedFxAttributes = breakpoints
           .map((breakpoint) =>
             getSupportedResponsiveFxAttributes(element, breakpoint),
@@ -150,19 +151,23 @@ const getRidOfFlexLayoutPlease = async () => {
 
         responsiveFxAttributeKeys.forEach((fxAttributeKey) => {
           element.removeAttribute(fxAttributeKey);
-          const breakpoint = fxAttributeKey.split(".")[1];
-          element.removeAttribute(`.${breakpoint}`);
         });
       });
 
       // get translations for non-responsive fxFlex directives (i.e. fxFlex, fxLayout) to tailwindcss classes
-      elementsWithFxFlex = root.querySelectorAll(fxQuery) ?? [];
-      elementsWithFxFlex.forEach((element) => {
+      const fxDirectiveRegex = new RegExp(supportedDirectives.join("|"));
+      const fxFlexElements = Array.from(root.getElementsByTagName("*")).filter(
+        (element) =>
+          Array.from(element.attributes).find((attribute) =>
+            fxDirectiveRegex.test(attribute.name),
+          ),
+      );
+      fxFlexElements.forEach((element: Element) => {
         const fxAttributes = getSupportedFxAttributes(element);
         let parentAttributeValues: string[];
-        if (element.parentNode) {
+        if (element.parentElement) {
           parentAttributeValues = getSupportedFxAttributes(
-            element.parentNode,
+            element.parentElement,
           ).map((attribute) => attribute[1]);
         } else {
           parentAttributeValues = [];
@@ -185,23 +190,59 @@ const getRidOfFlexLayoutPlease = async () => {
       });
 
       // finally, remove non-responsive fxFlex directives
-      elementsWithFxFlex.forEach((element) => {
+      fxFlexElements.forEach((element) => {
         const supportedFxAttributes = [...getSupportedFxAttributes(element)];
-        const responsiveFxAttributeKeys = supportedFxAttributes.map(
+        const fxAttributeKeys = supportedFxAttributes.map(
           (attribute) => attribute[0],
         );
 
-        responsiveFxAttributeKeys.forEach((fxAttributeKey) => {
+        fxAttributeKeys.forEach((fxAttributeKey) => {
           element.removeAttribute(fxAttributeKey);
         });
       });
 
       // apply all the translations
       translationOperations.forEach(([translations, element]) => {
-        applyTranslations(translations, element);
+        translations.forEach((translation) => {
+          switch (translation.operation) {
+            case "attribute":
+              element.setAttribute(translation.name, translation.value);
+              break;
+            case "class":
+              translation.classes.map((c) => element.classList.add(c));
+              break;
+          }
+        });
       });
 
-      fs.writeFileSync(htmlPath, root.toString(), { encoding: "utf-8" });
+      // restore camel-cases, attributes get parsed to lowercase :/
+      let componentTemplate = root.body.innerHTML;
+      const elements = Array.from(root.getElementsByTagName("*"));
+      const attributeNames = elements
+        .map((element) =>
+          Array.from(element.attributes).map((attribute) => attribute.name),
+        )
+        .flat();
+      const dataLower = data.toLowerCase();
+
+      attributeNames.forEach((name) => {
+        if (!dataLower.includes(name)) {
+          return;
+        }
+
+        const originalNameIndex = dataLower.indexOf(name);
+        if (originalNameIndex < 0) {
+          return;
+        }
+
+        const originalName = data.substring(
+          originalNameIndex,
+          originalNameIndex + name.length,
+        );
+        componentTemplate = componentTemplate.replace(name, originalName);
+      });
+
+      fs.writeFileSync(htmlPath, componentTemplate, { encoding: "utf-8" });
       countFiles++;
     });
 
@@ -227,7 +268,6 @@ declare global {
 
 String.prototype.translateNumberToPercent = function () {
   let maybeNumber = Number(String(this));
-
   if (isNaN(+maybeNumber)) {
     return String(this);
   }
@@ -236,19 +276,3 @@ String.prototype.translateNumberToPercent = function () {
 };
 
 export {};
-
-const applyTranslations = (
-  translations: TranslationOperationResult[],
-  element: HTMLElement,
-) => {
-  translations.forEach((translation) => {
-    switch (translation.operation) {
-      case "attribute":
-        element.setAttribute(translation.name, translation.value);
-        break;
-      case "class":
-        translation.classes.map((c) => element.classList.add(c));
-        break;
-    }
-  });
-};

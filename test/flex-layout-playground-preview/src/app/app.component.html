@@ -4,8 +4,8 @@
   <section class="bg-amber-300 rounded-md">
     <h2 class="font-bold text-lg">Row layouts (column on sm)</h2>
     <div class="w-96 xs:max-sm:flex xs:max-sm:flex-col xs:max-sm:gap-[.5rem] sm:max-md:flex sm:max-md:flex-col sm:max-md:gap-[1rem] md:max-lg:gap-[3rem] lg:max-xl:gap-[4rem] xl:max-2xl:gap-[5rem] flex flex-row gap-[1rem]">
-      <span class="grow shrink basis-0 border-box">Item1</span>
-      <span class="grow shrink basis-[50%] min-w-[50%] max-w-[50%] border-box">Item2</span>
+      <span class="flex grow shrink basis-0 border-box">Item1</span>
+      <span class="flex grow shrink basis-[50%] min-w-[50%] max-w-[50%] border-box">Item2</span>
       <span>Item3</span>
     </div>
     <div class="w-full sm:max-md:flex sm:max-md:flex-col-reverse sm:max-md:items-start flex flex-row-reverse justify-between content-center items-center">
@@ -17,21 +17,40 @@
   <section class="flex flex-row gap-[1rem]">
     <h2 class="font-bold text-lg">Column layouts</h2>
     <div class="w-80 bg-emerald-300 rounded-md flex flex-col gap-[1rem]">
-      <span class="grow shrink basis-0 border-box">Item1</span>
-      <span class="grow shrink basis-[60px] min-h-[60px] max-h-[60px] border-box">Item2</span>
+      <span class="flex grow shrink basis-0 border-box">Item1</span>
+      <span class="flex grow shrink basis-[60px] min-h-[60px] max-h-[60px] border-box">Item2</span>
       <span>Item3</span>
       <div>
-        <span class="grow shrink basis-[100px] min-w-[100px] max-w-[100px] border-box">nested</span>
+        <span class="flex grow shrink basis-[100px] min-w-[100px] max-w-[100px] border-box">nested</span>
       </div>
     </div>
 
     <div class="w-80 bg-emerald-300 rounded-md flex flex-col gap-[1rem] justify-between content-center items-center">
-      <span class="grow shrink basis-0 border-box">Item1</span>
-      <span class="grow shrink basis-[60px] min-h-[60px] max-h-[60px] border-box">Item2</span>
+      <span class="flex grow shrink basis-0 border-box">Item1</span>
+      <span class="flex grow shrink basis-[60px] min-h-[60px] max-h-[60px] border-box">Item2</span>
       <span>Item3</span>
       <div>
-        <span class="grow shrink basis-[100px] min-w-[100px] max-w-[100px] border-box">nested</span>
+        <span class="flex grow shrink basis-[100px] min-w-[100px] max-w-[100px] border-box">nested</span>
       </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="text-xl font-bold">Conditional stuff</h2>
+    <div class="flex flex-row">
+      <div *ngIf="true" class="flex grow shrink basis-[100px] min-w-[100px] max-w-[100px] border-box">Im an *ngIf :)</div>
+      <div [ngSwitch]="'a'">
+        <a *ngSwitchCase="'a'" [ngClass.sm]="{ test: true }" class="flex grow shrink basis-[200px] min-w-[200px] max-w-[200px] border-box">Im a switch-case :)</a>
+      </div>
+      <span class="sm:max-md:invisible">I should be only hidden on smaller screens :)</span>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="text-xl font-bold">Properties</h2>
+    <div class="flex flex-row gap-[1rem]">
+      <app-some-component someInput="hello" (someOutput)="handleSomeOutput($event)"></app-some-component>
+      <app-some-component [someInput]="'world'" (someOutput)="handleSomeOutput($event)"></app-some-component>
     </div>
   </section>
 

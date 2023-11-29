@@ -76,43 +76,43 @@ const createResponsiveTranslatorsForDirective = <
 };
 
 const fxFlexTranslators = createResponsiveTranslatorsForDirective(
-  "fxFlex",
+  "fxflex",
   translateFxFlex,
 );
 const fxLayoutTranslators = createResponsiveTranslatorsForDirective(
-  "fxLayout",
+  "fxlayout",
   translateFxLayout,
 );
 const fxLayoutAlignTranslators = createResponsiveTranslatorsForDirective(
-  "fxLayoutAlign",
+  "fxlayoutalign",
   translateFxLayoutAlign,
 );
 const fxLayoutGapTranslators = createResponsiveTranslatorsForDirective(
-  "fxLayoutGap",
+  "fxlayoutgap",
   translateFxLayoutGap,
 );
 const fxFxFillTranslators = createResponsiveTranslatorsForDirective(
-  "fxFill",
+  "fxfill",
   translateFxFill,
 );
 const fxFlexFillTranslators = createResponsiveTranslatorsForDirective(
-  "fxFlexFill",
+  "fxflexfill",
   translateFxFill,
 );
 const fxFlexOffsetTranslators = createResponsiveTranslatorsForDirective(
-  "fxFlexOffset",
+  "fxflexoffset",
   translateFxFlexOffset,
 );
 const fxFlexOrderTranslators = createResponsiveTranslatorsForDirective(
-  "fxFlexOrder",
+  "fxflexorder",
   translateFxFlexOrder,
 );
 const fxFlexShowTranslators = createResponsiveTranslatorsForDirective(
-  "fxShow",
+  "fxshow",
   translateFxShow,
 );
 const fxFlexHideTranslators = createResponsiveTranslatorsForDirective(
-  "fxHide",
+  "fxhide",
   translateFxHide,
 );
 
@@ -142,15 +142,15 @@ const responsiveTranslators = [
 export const translate: {
   [K in SupportedDirectiveType]: AnyTranslateFunction;
 } = {
-  fxFlex: translateFxFlex,
-  fxFlexFill: translateFxFill,
-  fxFlexOrder: translateFxFlexOrder,
-  fxFlexOffset: translateFxFlexOffset,
-  fxFill: translateFxFill,
-  fxLayout: translateFxLayout,
-  fxLayoutAlign: translateFxLayoutAlign,
-  fxLayoutGap: translateFxLayoutGap,
-  fxShow: translateFxShow,
-  fxHide: translateFxHide,
+  fxflex: translateFxFlex,
+  fxflexfill: translateFxFill,
+  fxflexorder: translateFxFlexOrder,
+  fxflexoffset: translateFxFlexOffset,
+  fxfill: translateFxFill,
+  fxlayout: translateFxLayout,
+  fxlayoutalign: translateFxLayoutAlign,
+  fxlayoutgap: translateFxLayoutGap,
+  fxshow: translateFxShow,
+  fxhide: translateFxHide,
   ...responsiveTranslators,
 };

@@ -11,17 +11,21 @@ export type SupportedTailwindcssBreakpointType =
   (typeof supportedTailwindcssBreakpoints)[number];
 
 export const supportedDirectives = [
-  "fxFlex",
-  "fxLayout",
-  "fxLayoutAlign",
-  "fxFlexFill",
-  "fxFill",
-  "fxShow",
-  "fxHide",
-  "fxLayoutGap",
-  "fxFlexOffset",
-  "fxFlexOrder",
+  "fxflex",
+  "fxlayout",
+  "fxlayoutalign",
+  "fxflexfill",
+  "fxfill",
+  "fxshow",
+  "fxhide",
+  "fxlayoutgap",
+  "fxflexoffset",
+  "fxflexorder",
 ] as const;
+
+export const supportedResponsiveDirectives = supportedDirectives
+  .map((directive) => supportedBreakpoints.map((breakpoint) => `${breakpoint}`))
+  .flat();
 
 export type SupportedFxDirectiveType = (typeof supportedDirectives)[number];
 export type SupportedResponsiveFxDirectiveType =

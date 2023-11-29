@@ -4,13 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c5df6d7a-9665-4c1c-a4ff-a71a6a4b322b" name="Changes" comment="feat: enable translations of first fxFlex directives">
+    <list default="true" id="c5df6d7a-9665-4c1c-a4ff-a71a6a4b322b" name="Changes" comment="fix: use tailwinds 'max-' responsive viewport api">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/attributes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/attributes.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/supported-directive-type.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/supported-directive-type.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/translators/translate-fx-layout-gap.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/translators/translate-fx-layout-gap.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/translators/translate-fx-flex.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/translators/translate-fx-flex.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/translators/translate.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/translators/translate.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/flex-layout-playground-preview/src/app/app.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/test/flex-layout-playground-preview/src/app/app.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/flex-layout-playground-preview/tailwind.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/test/flex-layout-playground-preview/tailwind.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/flex-layout-playground-preview/src/app/app.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/test/flex-layout-playground-preview/src/app/app.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/flex-layout-playground-preview/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/test/flex-layout-playground-preview/src/app/app.module.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,12 +70,32 @@
       <recent name="C:\Users\sver\flex-layout-to-tailwindcss\src\attributes.ts" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.serve-playground-preview">
+  <component name="RunManager" selected="npm.dev-nori">
+    <configuration name="dev-nori" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="dev-nori" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
     <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
       <scripts>
         <script value="dev" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="serve-nori-preview" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="serve-nori-preview" />
       </scripts>
       <node-interpreter value="project" />
       <envs />
@@ -96,33 +121,13 @@
       <envs />
       <method v="2" />
     </configuration>
-    <configuration name="start (1)" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/test/flex-layout-playground-preview/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="start" />
-      </scripts>
-      <node-interpreter value="project" />
-      <envs />
-      <method v="2" />
-    </configuration>
-    <configuration name="start (2)" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/test/flex-layout-playground/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="start" />
-      </scripts>
-      <node-interpreter value="project" />
-      <envs />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.serve-playground-preview" />
+        <item itemvalue="npm.dev-nori" />
+        <item itemvalue="npm.serve-nori-preview" />
         <item itemvalue="npm.dev" />
         <item itemvalue="npm.serve-playground" />
-        <item itemvalue="npm.start (2)" />
-        <item itemvalue="npm.start (1)" />
+        <item itemvalue="npm.serve-playground-preview" />
       </list>
     </recent_temporary>
   </component>
@@ -143,7 +148,9 @@
       <workItem from="1701086914324" duration="6782000" />
       <workItem from="1701094151599" duration="5391000" />
       <workItem from="1701164314567" duration="1189000" />
-      <workItem from="1701183541098" duration="5136000" />
+      <workItem from="1701183541098" duration="5531000" />
+      <workItem from="1701190079017" duration="321000" />
+      <workItem from="1701241826906" duration="17126000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <option name="closed" value="true" />
@@ -161,7 +168,15 @@
       <option name="project" value="LOCAL" />
       <updated>1701186417589</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="fix: use tailwinds 'max-' responsive viewport api">
+      <option name="closed" value="true" />
+      <created>1701189717443</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1701189717443</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -181,6 +196,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="init" />
     <MESSAGE value="feat: enable translations of first fxFlex directives" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: enable translations of first fxFlex directives" />
+    <MESSAGE value="fix: use tailwinds 'max-' responsive viewport api" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: use tailwinds 'max-' responsive viewport api" />
   </component>
 </project>
